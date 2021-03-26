@@ -37,25 +37,29 @@ zones$gc6 <- c1[c1$gridcode == '6',]
 zones$gc7 <- c1[c1$gridcode == '7',]
 zones$gc8 <- c1[c1$gridcode == '8',]
 
+zones$gc1@data[,1] <- TRUE
+zones$gc2@data[,1] <- TRUE
+zones$gc3@data[,1] <- TRUE
+zones$gc4@data[,1] <- TRUE
+zones$gc5@data[,1] <- TRUE
+zones$gc6@data[,1] <- TRUE
+zones$gc7@data[,1] <- TRUE
+zones$gc8@data[,1] <- TRUE
 
-
-zones$HPZ@data[,1] <- TRUE
-#read in the state parks
-zones$NPZ <- NPZ
-zones$NPZ@data[,1] <- TRUE
-zones$SPZ <- SPZ
-zones$SPZ@data[,1] <- TRUE
-zones$MUZ <- MUZ
-zones$MUZ@data[,1] <- TRUE
 
 #combine
-zones$allSurvArea <- union( zones$SPZ, zones$MUZ)
-zones$allSurvArea <- union( zones$allSurvArea, zones$NPZ)
-zones$allSurvArea <- union( zones$allSurvArea, zones$HPZ)
+zones$allSurvArea <- union( zones$gc1, zones$gc2)
+zones$allSurvArea <- union( zones$allSurvArea, zones$gc3)
+zones$allSurvArea <- union( zones$allSurvArea, zones$gc4)
+zones$allSurvArea <- union( zones$allSurvArea, zones$gc5)
+zones$allSurvArea <- union( zones$allSurvArea, zones$gc6)
+zones$allSurvArea <- union( zones$allSurvArea, zones$gc7)
+zones$allSurvArea <- union( zones$allSurvArea, zones$gc8)
+
 
 #intial look to see area
 plot( zones$allSurvArea, col='orange', border='orange')
-plot( zones$MUZ, col='orange', border='orange')
+plot( zones$gc3, col='orange', border='orange')
 plot( zones$SPZ, add=TRUE, col='green', border='green')
 plot( zones$HPZ, add=TRUE, col='blue', border='blue')
 plot( zones$NPZ, add=TRUE, col='blue', border='blue')

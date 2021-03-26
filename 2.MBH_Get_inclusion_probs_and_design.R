@@ -36,7 +36,7 @@ classby <- "SentFine"
 # Classes based on sentinel 2 unsupervised classification of sentinel --
 
 #c1 <- readOGR(paste(s.dir, "Sen2_c1_unsup.shp", sep='/'))
-rc <- raster(paste(r.dir, "Sen2_c1_unsup.tif", sep='/'))
+rc <- raster(paste(r.dir, "Sen2_c9_unsup.tif", sep='/'))
 rc
 plot(rc)
 rcrs <- proj4string(rc)
@@ -47,23 +47,26 @@ ps <- readOGR(paste(s.dir, "icoast_frdc_polygons.shp", sep='/'))
 # transform to lat long --
 psu <- spTransform(ps, CRSobj = rcrs)
 
-c1 <- psu[psu$name == 'C1',]
-plot(c1)
+c9 <- psu[psu$name == 'C9',]
+plot(c9, add = TRUE)
 
-zones <- c1
+zones <- c9
+plot(zones)
+zones
 
 
 # Proportions for each class ----
 # classes
-xprop <- 1/8
-class.targetProps <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125) # sum equals 1
+xprop <- 1/10
+class.targetProps <- rep(xprop, 10)
+#class.targetProps <- c(0.125,0.125,0.125,0.125,0.125,0.125,0.125,0.125) # sum equals 1
 
 
 # Get inclusion probablities according to class.targetProps ----
 
 catB <- rc
 rcdf <- raster::as.data.frame(rc, xy=T)
-rcdf$Sen2_c1_unsup <- as.factor(rcdf$Sen2_c1_unsup)
+rcdf[,3] <- as.factor(rcdf[,3])
 str(rcdf)
 rcdf2 <- na.omit(rcdf) 
 str(rcdf2)
@@ -101,9 +104,10 @@ for( ii in 1:length( propsOfClass)){
 
 
 inclProbs[zoneID[[1]][,"cell"]][is.na( inclProbs[zoneID[[1]][,"cell"]])] <- 0
-inclProbs[zoneID[[1]][,"cell"]] <- inclProbs[zoneID[[1]][,"cell"]] / sum( inclProbs[zoneID[[1]][,"cell"]])
+inclProbs[zoneID[[1]][,"cell"]] <- inclProbs[zoneID[[1]][,"cell"]] / sum(inclProbs[zoneID[[1]][,"cell"]])
 
-inclProbs@data@values[inclProbs@data@values %in% c(0,1,2,3,4,5,6,7,8)] <- NA  #cheats way to crop
+#inclProbs@data@values[inclProbs@data@values %in% c(0,1,2,3,4,5,6,7,8,9,10)] <- NA  #cheats way to crop
+inclProbs@data@values[inclProbs@data@values %in% string.no.classes] <- NA # string has to be the same lenght as no. of classes
 plot( inclProbs)
 
 
