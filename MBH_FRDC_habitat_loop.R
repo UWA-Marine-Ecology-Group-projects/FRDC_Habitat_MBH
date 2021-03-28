@@ -13,6 +13,7 @@ library( class)
 library( fields)
 #install.packages("pdist")
 library( pdist)
+library( stringr)
 
 # clear environment ----
 rm(list = ls())
@@ -142,9 +143,12 @@ for(ii in 1:length(all.ips)){
   newSites <- quasiSamp( n=numby, potential.sites=coordinates(inclProbs), 
                        inclusion.probs=values(inclProbs), nSampsToConsider=5000) # run MBH
   newSites <- SpatialPointsDataFrame( coords=newSites[,c("x","y")], data=newSites, proj4string=CRS(proj4string(inclProbs))) # make sp
-  namsp <- paste(paste('c', ii, sep =''), "MBH_SentFine.shp", sep ='_') # make name of sp
-  writeOGR(newSites, o.dir, namsp, driver = 'ESRI Shapefile')
+  get.name <- names(inclProbs) # get name of raster with site code
+  site.code <- stringr::str_extract(first.part, "^.{3}") # extract fist two letters of name
+  namsp <- paste(site.code, "MBH_SentFine", sep ='_') # make name of sp
+  writeOGR(newSites, o.dir, namsp, driver = 'ESRI Shapefile', overwrite = T)
 }
+
 
 
 
