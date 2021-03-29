@@ -146,7 +146,7 @@ for(ii in 1:length(all.ips)){
                          inclusion.probs=values(inclProbs), nSampsToConsider=5000) # run MBH
   newSites <- SpatialPointsDataFrame( coords=newSites[,c("x","y")], data=newSites, proj4string=CRS(proj4string(inclProbs))) # make sp
   get.name <- names(inclProbs) # get name of raster with site code
-  site.code <- stringr::str_extract(get.name, "^.{2}") # extract fist two letters of name
+  site.code <- stringr::str_extract(get.name, "^.{3}") # extract fist two letters of name
   namsp <- paste(site.code, "MBH_SentFine", sep ='_') # make name of sp
   writeOGR(newSites, o.dir, namsp, driver = 'ESRI Shapefile', overwrite = T)
   #namsp <- paste(paste('c', ii, sep =''), "MBH_SentFine.shp", sep ='_') # make name of sp
